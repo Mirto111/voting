@@ -15,8 +15,6 @@ public class Restaurant extends BaseEntity {
     @NotBlank
     private String name;
 
-/*   @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-   private List<Dish> dishes;*/
 
     public Restaurant() {
     }

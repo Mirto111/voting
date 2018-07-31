@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class DishServiceImpl implements DishService {
@@ -33,7 +34,7 @@ public class DishServiceImpl implements DishService {
     @Override
     public Dish get(int id, int restId) {
 
-        return crudDishRepository.get(id, restId);
+        return crudDishRepository.getByIdAndRestaurantId(id, restId);
     }
 
     @Override
@@ -42,8 +43,13 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public Collection<Dish> getAllForDay(int restId, LocalDate localDate) {
-        return crudDishRepository.getAllForDay(restId, localDate);
+    public Collection<Dish> getAllByRestaurantAndDate(int restId, LocalDate localDate) {
+        return crudDishRepository.getAllByRestaurantIdAndCurrentDate(restId, localDate);
+    }
+
+    @Override
+    public List<Dish> getAllByDate(LocalDate localDate) {
+        return crudDishRepository.getAllByCurrentDate(localDate);
     }
 
 }

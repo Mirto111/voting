@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.Collection;
 
-/**
- * Created by Secret_Hero on 04.03.2018.
- */
 
 @RestController
 @RequestMapping("/rest/dishes")
@@ -31,8 +28,8 @@ public class DishRestController {
         dishService.delete(id, restId);
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, value = "/{id}")
-    public void update(@RequestBody Dish dish, @PathVariable("id") int id, @RequestParam("restId") int restId) {
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void update(@RequestBody Dish dish, @RequestParam("restId") int restId) {
 
         dishService.save(dish, restId);
     }
@@ -45,11 +42,16 @@ public class DishRestController {
 
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/restaurant/{id}")
-    public Collection<Dish> getAllForDay(@PathVariable("id") int restId, @RequestParam(value = "voteDate", required = false) LocalDate voteDate) {
+    public Collection<Dish> getAllForDay(@PathVariable("id") int restId, @RequestParam(value = "currentDate", required = false) LocalDate currentDate) {
 
-        LocalDate localDate = voteDate != null ? voteDate : LocalDate.now();
-        return dishService.getAllForDay(restId, localDate);
+        LocalDate localDate = currentDate != null ? currentDate : LocalDate.now();
+        return dishService.getAllByRestaurantAndDate(restId, localDate);
     }
 
 
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<Dish> getAllByDate(@RequestParam(value = "currentDate", required = false) LocalDate currentDate) {
+        LocalDate localDate = currentDate != null ? currentDate : LocalDate.now();
+        return dishService.getAllByDate(localDate);
+    }
 }

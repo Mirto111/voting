@@ -14,9 +14,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * Created by Secret_Hero on 04.03.2018.
- */
 
 @RestController
 @RequestMapping("/rest/restaurants")
@@ -39,7 +36,6 @@ public class RestaurantRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-// попроб без консьюмов
     public Restaurant create(@RequestBody Restaurant restaurant) {
         return restaurantService.save(restaurant);
     }
@@ -58,7 +54,6 @@ public class RestaurantRestController {
     public void vote(@RequestBody Restaurant restaurant) {
 
         voteService.vote(AuthorizedUser.id(), restaurant.getName());
-        voteService.saveAll(new ArrayList<>(getResults()));
 
     }
 
@@ -70,7 +65,12 @@ public class RestaurantRestController {
         return results.entrySet().stream().map(m -> new Vote(m.getKey(), m.getValue().intValue())).collect(Collectors.toList());
     }
 
+    @GetMapping(value = "/saveResults")
+    public Collection<Vote> saveResults() {
 
+      return voteService.saveAll(new ArrayList<>(getResults()));
+
+    }
 }
 
 

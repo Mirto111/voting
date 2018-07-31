@@ -76,4 +76,13 @@ public class Dish extends BaseEntity {
         this.restaurant = restaurant;
     }
 
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "currentDate=" + currentDate +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", restaurant=" + restaurant +
+                '}';
+    }
 }

@@ -53,7 +53,7 @@ CREATE TABLE vote (
   id  INTEGER PRIMARY KEY DEFAULT  nextval(' global_seq'),
   vote_date DATE NOT NULL DEFAULT now(),
   rest_name VARCHAR NOT NULL,
-  count INTEGER NOT NULL
+  count_vote INTEGER NOT NULL
   /*CONSTRAINT vote_idx  UNIQUE (user_id,vote_date)*/
 
 );
