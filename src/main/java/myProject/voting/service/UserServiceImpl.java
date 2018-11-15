@@ -3,7 +3,9 @@ package myProject.voting.service;
 import myProject.voting.AuthorizedUser;
 import myProject.voting.model.User;
 import myProject.voting.repository.datajpa.CrudUserRepository;
+import myProject.voting.util.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,7 +34,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public User get(int id) {
-        return crudRepository.getOne(id);
+        return crudRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override

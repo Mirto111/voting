@@ -17,5 +17,4 @@
 </ol>
 <p>Каждый ресторан предоставляет новое меню каждый день</p> 
 
-It should contain the code and README.md with API documentation and curl commands to get data for voting and vote.
-(Пока без curl комманд и без описания API)
+

@@ -1,12 +1,14 @@
 package myProject.voting.model;
 
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * Created by Secret_Hero on 24.10.2017.
@@ -26,7 +28,7 @@ public class Vote extends BaseEntity{
     @NotBlank
     private String restaurantName;
 
-    @Column(name = "count", nullable = false)
+    @Column(name = "count_vote", nullable = false)
     private int count;
 
     public Vote() {
@@ -50,6 +52,13 @@ public class Vote extends BaseEntity{
 
     public void setVotingDate(LocalDate votingDate) {
         this.votingDate = votingDate;
+    }
+
+    public static Map<String, Long> getResults() {
+
+        Map<String, Long> results = voteCount.values().stream().collect(Collectors.groupingBy(v -> v, Collectors.counting()));
+
+        return results;
     }
 
     public static ConcurrentHashMap<Integer, String> getVoteCount() {

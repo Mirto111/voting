@@ -4,6 +4,7 @@ import myProject.voting.AuthorizedUser;
 import myProject.voting.model.Restaurant;
 import myProject.voting.model.Vote;
 import myProject.voting.repository.datajpa.CrudRestaurantRepository;
+import myProject.voting.util.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public Restaurant get(int restId) {
-        return crudRestaurantRepository.getOne(restId);
+        return crudRestaurantRepository.findById(restId).orElseThrow(NotFoundException::new);
     }
 
     @Override

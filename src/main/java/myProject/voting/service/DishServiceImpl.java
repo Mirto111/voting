@@ -3,7 +3,9 @@ package myProject.voting.service;
 import myProject.voting.model.Dish;
 import myProject.voting.repository.datajpa.CrudDishRepository;
 import myProject.voting.repository.datajpa.CrudRestaurantRepository;
+import myProject.voting.util.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -26,7 +28,7 @@ public class DishServiceImpl implements DishService {
         if (!dish.isNew() && get(dish.getId(), restId) == null) {
             return null;
         }
-        dish.setRestaurant(crudRestaurantRepository.getOne(restId));
+        dish.setRestaurant(crudRestaurantRepository.findById(restId).orElseThrow(NotFoundException::new));
 
         return crudDishRepository.save(dish);
     }

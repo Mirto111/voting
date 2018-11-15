@@ -29,7 +29,6 @@ public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Inte
     @Override
     List<Restaurant> findAll(Sort sort);
 
-    @Override
-    Restaurant getOne(Integer integer);
+
 
 }
