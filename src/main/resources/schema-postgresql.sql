@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS vote;
+DROP TABLE IF EXISTS voting_result;
 DROP TABLE IF EXISTS dishes;
 DROP TABLE IF EXISTS restaurants;
 DROP TABLE IF EXISTS user_roles;
@@ -48,12 +49,10 @@ CREATE TABLE user_roles
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
-CREATE TABLE vote (
-
+CREATE TABLE voting_result (
   id  INTEGER PRIMARY KEY DEFAULT  nextval(' global_seq'),
   vote_date DATE NOT NULL DEFAULT now(),
   rest_name VARCHAR NOT NULL,
   count_vote INTEGER NOT NULL
-  /*CONSTRAINT vote_idx  UNIQUE (user_id,vote_date)*/
 
 );

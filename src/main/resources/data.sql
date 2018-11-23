@@ -1,5 +1,4 @@
 DELETE FROM dishes;
-DELETE FROM vote;
 DELETE FROM restaurants;
 DELETE FROM user_roles;
 DELETE FROM users;
@@ -14,8 +13,8 @@ VALUES ('User', 'user@yandex.ru', '$2a$10$lvB2KsXBJCRHkjzc7puy9.LPM3GxZuXspshPgH
 
 INSERT INTO restaurants(name)
     VALUES ('Три кабана'),
-      ('Кфс'),
-      ('Иль Патио'),
+      ('Kfc'),
+      ('Ilpatio'),
       ('У фонтана');
 
 INSERT INTO user_roles (role, user_id) VALUES
@@ -39,5 +38,5 @@ VALUES('Рыбный суп',100.05,4),
   ('Тирамису',90.16,7),
   ('Какао',28.10,7);
 
-INSERT INTO vote (rest_name, count_vote) VALUES
-  ('Три кабана',2),('Иль Патио',5);
+INSERT INTO voting_result (vote_date,rest_name, count_vote) VALUES
+  ('2018-05-20','Три кабана',2),('2018-05-20','Иль Патио',5);

@@ -2,6 +2,7 @@ package myProject.voting.web.rest;
 
 import myProject.voting.model.User;
 import myProject.voting.service.UserService;
+import myProject.voting.util.IllegalRequestDataException;
 import myProject.voting.util.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,12 +30,12 @@ public class UserRestController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/{id}")
     public User get(@PathVariable("id") int id) {
-        return Optional.ofNullable(userService.get(id)).orElseThrow(NotFoundException::new);
+        return userService.get(id);
     }
 
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable("id") int id) {
-        Optional.ofNullable(userService.get(id)).orElseThrow(NotFoundException::new);
+
         userService.delete(id);
     }
 
@@ -49,9 +50,8 @@ public class UserRestController {
     public void update(@RequestBody User user, @PathVariable("id") int id) {
 
         if (user.getId() != id) {
-            throw new IllegalArgumentException(); // другой тип ошибки
+            throw new IllegalRequestDataException("User must be with id=" + id);
         }
-        Optional.ofNullable(userService.get(id)).orElseThrow(NotFoundException::new);
         userService.save(user);
     }
 
@@ -62,7 +62,7 @@ public class UserRestController {
 
     @GetMapping(value = "/email/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
     public User getByEmail(@PathVariable String email) {
-        return Optional.ofNullable(userService.getByEmail(email)).orElseThrow(NotFoundException::new);
+        return userService.getByEmail(email);
     }
 
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DishServiceImpl implements DishService {
@@ -19,7 +20,7 @@ public class DishServiceImpl implements DishService {
     CrudDishRepository crudDishRepository;
 
     @Autowired
-    CrudRestaurantRepository crudRestaurantRepository;
+    RestaurantService crudRestaurantRepository;
 
 
     @Override
@@ -28,7 +29,7 @@ public class DishServiceImpl implements DishService {
         if (!dish.isNew() && get(dish.getId(), restId) == null) {
             return null;
         }
-        dish.setRestaurant(crudRestaurantRepository.findById(restId).orElseThrow(NotFoundException::new));
+        dish.setRestaurant(crudRestaurantRepository.get(restId));
 
         return crudDishRepository.save(dish);
     }
@@ -36,22 +37,25 @@ public class DishServiceImpl implements DishService {
     @Override
     public Dish get(int id, int restId) {
 
-        return crudDishRepository.getByIdAndRestaurantId(id, restId);
+        return Optional.ofNullable(crudDishRepository.getByIdAndRestaurantId(id, restId)).orElseThrow(()->new NotFoundException("Dish with id="+ id+" not found"));
     }
 
     @Override
     public int delete(int id, int restId) {
+        get(id, restId);
         return crudDishRepository.delete(id, restId);
     }
 
     @Override
     public Collection<Dish> getAllByRestaurantAndDate(int restId, LocalDate localDate) {
-        return crudDishRepository.getAllByRestaurantIdAndCurrentDate(restId, localDate);
+        LocalDate date = localDate != null ? localDate : LocalDate.now();
+        return crudDishRepository.getAllByRestaurantIdAndCurrentDate(restId, date);
     }
 
     @Override
-    public List<Dish> getAllByDate(LocalDate localDate) {
-        return crudDishRepository.getAllByCurrentDate(localDate);
+    public Collection<Dish> getAllByDate(LocalDate localDate) {
+        LocalDate date = localDate != null ? localDate : LocalDate.now();
+        return crudDishRepository.getAllByCurrentDate(date);
     }
 
 }

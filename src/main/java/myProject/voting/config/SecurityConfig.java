@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -14,6 +15,7 @@ import org.springframework.security.web.authentication.Http403ForbiddenEntryPoin
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -25,14 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests().antMatchers("/css/**", "/js/**", "/login/**").anonymous()
                 .antMatchers("/rest/users/**").hasRole("ADMIN")
-                .antMatchers("/rest/dishes/**").hasRole("ADMIN")
                 .and().httpBasic().authenticationEntryPoint(restAuthenticationEntryPoint);
-
-/*              http.authorizeRequests()
-                .anyRequest()
-                .permitAll()
-                .and().csrf().disable();*/
-
 
     }
 
@@ -44,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserServiceImpl userService;
 
     @Autowired
-    protected void configure(AuthenticationManagerBuilder authManagerBuilder) throws Exception {
+    protected void configure(AuthenticationManagerBuilder authManagerBuilder)  {
         authManagerBuilder.authenticationProvider(myAuthProvider());
     }
 

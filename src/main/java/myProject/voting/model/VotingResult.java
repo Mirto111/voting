@@ -1,23 +1,19 @@
 package myProject.voting.model;
 
-import javax.validation.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
-/**
- * Created by Secret_Hero on 24.10.2017.
- */
+
 @Entity
-@Table(name = "vote")
-public class Vote extends BaseEntity{
+@Table(name = "voting_result")
+public class VotingResult extends BaseEntity {
 
-    private static ConcurrentHashMap<Integer, String> voteCount = new ConcurrentHashMap<>();
 
     @Column(name = "vote_date", nullable = false)
     @NotNull
@@ -31,20 +27,19 @@ public class Vote extends BaseEntity{
     @Column(name = "count_vote", nullable = false)
     private int count;
 
-    public Vote() {
+    public VotingResult() {
     }
 
-    public Vote( String restaurantName, int count) {
-       this(null,LocalDate.now() ,restaurantName,count);
+    public VotingResult(String restaurantName, int count) {
+        this( null, LocalDate.now(), restaurantName, count);
     }
 
-    public Vote(Integer id, LocalDate votingDate, String restaurantName, int count) {
+    public VotingResult(Integer id, @NotNull LocalDate votingDate, @NotBlank String restaurantName, int count) {
         super(id);
         this.votingDate = votingDate;
         this.restaurantName = restaurantName;
         this.count = count;
     }
-
 
     public LocalDate getVotingDate() {
         return votingDate;
@@ -52,21 +47,6 @@ public class Vote extends BaseEntity{
 
     public void setVotingDate(LocalDate votingDate) {
         this.votingDate = votingDate;
-    }
-
-    public static Map<String, Long> getResults() {
-
-        Map<String, Long> results = voteCount.values().stream().collect(Collectors.groupingBy(v -> v, Collectors.counting()));
-
-        return results;
-    }
-
-    public static ConcurrentHashMap<Integer, String> getVoteCount() {
-        return voteCount;
-    }
-
-    public static void setVoteCount(ConcurrentHashMap<Integer, String> voteCount) {
-        Vote.voteCount = voteCount;
     }
 
     public String getRestaurantName() {
@@ -88,7 +68,7 @@ public class Vote extends BaseEntity{
 
     @Override
     public String toString() {
-        return "Vote{" +
+        return "VotingResult{" +
                 "votingDate=" + votingDate +
                 ", restaurantName='" + restaurantName + '\'' +
                 ", count=" + count +

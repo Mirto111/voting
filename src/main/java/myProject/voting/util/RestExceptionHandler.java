@@ -20,7 +20,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({NotFoundException.class
             })
     protected ResponseEntity<Object> handleNotFound(Exception ex, WebRequest request) {
-        return handleExceptionInternal(ex, "Not found", new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler({IllegalArgumentException.class
+    })
+    protected ResponseEntity<Object> handleVoting(Exception ex, WebRequest request) {
+        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.LOCKED, request);
     }
 
     @ExceptionHandler({
@@ -30,6 +36,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleBadRequest(Exception ex, WebRequest request) {
         return handleExceptionInternal(ex, ex
                 .getLocalizedMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler({IllegalRequestDataException.class
+    })
+    protected ResponseEntity<Object> handleRequestDataError(Exception ex, WebRequest request) {
+        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY, request);
     }
 
 }

@@ -32,7 +32,9 @@ public class Dish extends BaseEntity {
     public Dish() {
     }
 
-
+    public Dish( String description, BigDecimal price) {
+        this(null, LocalDate.now(), description, price);
+    }
     public Dish(LocalDate localDate, String description, BigDecimal price) {
         this(null, localDate, description, price);
     }

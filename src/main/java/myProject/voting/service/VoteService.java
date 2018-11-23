@@ -1,17 +1,24 @@
 package myProject.voting.service;
 
-import myProject.voting.model.Vote;
+import myProject.voting.model.VotingResult;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 public interface VoteService {
 
-    List<Vote> getAllByDate(LocalDate localDate);
+    List<VotingResult> getResultsByDate(LocalDate localDate);
 
-    List<Vote> saveAll(List<Vote> votes);
+    List<VotingResult> saveAll(List<VotingResult> votes);
 
-    void vote(int userId, String restaurantName);
+    boolean vote(int userId, String restaurantName);
 
+    Map<String, Long> getCurrentResults();
+
+    void setEndOfVotingTime(LocalTime localTime);
+
+    LocalTime getEndOfVotingTime();
 
 }

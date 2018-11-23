@@ -64,7 +64,7 @@ public class DishRestControllerTest {
         Dish dish = createRandomDish();
         String location = createDishAsUri(dish);
 
-        //dish.setId(Integer.parseInt(location.split("rest/dishes/")[1]));
+
         dish.setPrice(BigDecimal.valueOf(10.20));
 
         Response response = givenAuth()
@@ -83,7 +83,7 @@ public class DishRestControllerTest {
 
         Dish dish = createRandomDish();
 
-        final Response response = givenAuth().given()
+        final Response response = givenAuth()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(dish)
                 .post(API_ROOT+"?restId="+dish.getRestaurant().getId());
@@ -92,7 +92,7 @@ public class DishRestControllerTest {
     }
 
 //    @Test
-//    public void getAllForDay() {
+//    public void getAllByRestaurantForDay() {
 //    }
 //
 //    @Test

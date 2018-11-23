@@ -1,12 +1,15 @@
 package myProject.voting.service;
 
-import myProject.voting.model.Vote;
+import myProject.voting.model.VotingResult;
+import myProject.voting.model.VoteSystem;
 import myProject.voting.repository.datajpa.CrudVoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class VoteServiceImpl implements VoteService {
@@ -15,18 +18,32 @@ public class VoteServiceImpl implements VoteService {
     CrudVoteRepository crudVoteRepository;
 
 
-    @Override
-    public List<Vote> getAllByDate(LocalDate localDate) {
+    public List<VotingResult> getResultsByDate(LocalDate localDate) {
         return crudVoteRepository.findAllByVotingDate(localDate);
     }
 
     @Override
-    public List<Vote> saveAll(List<Vote> votes) {
+    public List<VotingResult> saveAll(List<VotingResult> votes) {
         return crudVoteRepository.saveAll(votes);
     }
 
     @Override
-    public void vote(int userId, String restaurantName) {
-        Vote.getVoteCount().put(userId, restaurantName);
+    public boolean vote(int userId, String restaurantName) {
+      return  VoteSystem.getVoteCount().put(userId, restaurantName)!=null;
+    }
+
+    @Override
+    public Map<String, Long> getCurrentResults() {
+        return VoteSystem.getResults();
+    }
+
+    @Override
+    public void setEndOfVotingTime(LocalTime localTime) {
+        VoteSystem.setEndOfVotingTime(localTime);
+    }
+
+    @Override
+    public LocalTime getEndOfVotingTime() {
+        return VoteSystem.getEndOfVotingTime();
     }
 }

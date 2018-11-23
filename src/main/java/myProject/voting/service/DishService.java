@@ -20,7 +20,7 @@ public interface DishService {
 
     Collection<Dish> getAllByRestaurantAndDate(int restId, LocalDate localDate);
 
-    List<Dish> getAllByDate(LocalDate localDate);
+    Collection<Dish> getAllByDate(LocalDate localDate);
 
 
 }
