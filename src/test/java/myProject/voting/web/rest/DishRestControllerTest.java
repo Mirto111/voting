@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
 public class DishRestControllerTest {
 
 
-    private static final String API_ROOT = "http://localhost:8080/rest/dishes";
+    private static final String API_ROOT = "http://localhost:8080/rest/restaurants";
 
     private RequestSpecification givenAuth() {
 
@@ -70,7 +70,7 @@ public class DishRestControllerTest {
         Response response = givenAuth()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(dish)
-                .put(API_ROOT+"?restId="+dish.getRestaurant().getId());
+                .put(API_ROOT + "/"+dish.getRestaurant().getId()+"/dishes");
         assertEquals(HttpStatus.OK.value(), response.getStatusCode());
 
         response = givenAuth().get(location);
@@ -86,7 +86,7 @@ public class DishRestControllerTest {
         final Response response = givenAuth()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(dish)
-                .post(API_ROOT+"?restId="+dish.getRestaurant().getId());
+                .post(API_ROOT + "/"+dish.getRestaurant().getId()+"/dishes");
 
         assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
     }
@@ -113,11 +113,11 @@ public class DishRestControllerTest {
         final Response response = givenAuth().given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(dish)
-                .post(API_ROOT+"?restId="+dish.getRestaurant().getId());
+                .post(API_ROOT+"/"+dish.getRestaurant().getId()+"/dishes");
 
                 dish.setId(response.jsonPath().get("id"));
-        return API_ROOT + "/" + response.jsonPath()
-                .get("id")+"?restId="+dish.getRestaurant().getId();
+        return API_ROOT + "/"+dish.getRestaurant().getId()+"/dishes/" + response.jsonPath()
+                .get("id");
     }
 
     private Restaurant createRandomRestaurant() {

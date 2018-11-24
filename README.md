@@ -38,16 +38,16 @@ curl -s -X POST --user admin@gmail.com:admin http://localhost:8080/rest/restaura
 #### get restaurant not found
 curl -s  http://localhost:8080/rest/restaurants/50 --user admin@gmail.com:admin
 #### get dish by id and Restaurant id
-curl -s --user admin@gmail.com:admin http://localhost:8080/rest/dishes/10?restId=5
+curl -s --user admin@gmail.com:admin http://localhost:8080/rest/restaurants/5/dishes/10
 
 #### create dish
-curl -s -X POST --user admin@gmail.com:admin http://localhost:8080/rest/dishes?restId=4 --header "Content-Type: application/json" -d '{"currentDate":"2018-05-20","description":"newDish","price":"10.12"}'
+curl -s -X POST --user admin@gmail.com:admin http://localhost:8080/rest/restaurants/4/dishes --header "Content-Type: application/json" -d '{"currentDate":"2018-05-20","description":"newDish","price":"10.12"}'
 
 #### update dish
-curl -s -X PUT --user admin@gmail.com:admin http://localhost:8080/rest/dishes?restId=4 --header "Content-Type: application/json" -d '{"id":"9","currentDate":"2018-05-20","description":"updateDish","price":"10.40"}'
+curl -s -X PUT --user admin@gmail.com:admin http://localhost:8080/rest/restaurants/4/dishes --header "Content-Type: application/json" -d '{"id":"9","currentDate":"2018-05-20","description":"updateDish","price":"10.40"}'
 
 #### get All Dishes by Restaurant
-curl -s --user admin@gmail.com:admin http://localhost:8080/rest/dishes/restaurant/6
+curl -s --user admin@gmail.com:admin http://localhost:8080/rest/restaurants/6/dishes/getAllByRestaurant
 
 #### get All Users
 curl -s --user admin@gmail.com:admin http://localhost:8080/rest/users

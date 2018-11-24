@@ -16,7 +16,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/rest/dishes")
+@RequestMapping("/rest/restaurants/{restId}/dishes")
 public class DishRestController {
 
 
@@ -24,35 +24,35 @@ public class DishRestController {
     DishService dishService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/{id}")
-    public Dish get(@RequestParam("restId") int restId, @PathVariable("id") int id) {
+    public Dish get(@PathVariable("restId") int restId, @PathVariable("id") int id) {
 
         return  dishService.get(id, restId);
     }
 
     @Secured("ROLE_ADMIN")
     @DeleteMapping(value = "/{id}")
-    public void delete(@RequestParam("restId") int restId, @PathVariable("id") int id) {
+    public void delete(@PathVariable("restId") int restId, @PathVariable("id") int id) {
 
         dishService.delete(id, restId);
     }
 
     @Secured("ROLE_ADMIN")
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@RequestBody Dish dish, @RequestParam("restId") int restId) {
+    public void update(@RequestBody Dish dish, @PathVariable("restId") int restId) {
 
         dishService.save(dish, restId);
     }
     @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Dish create(@RequestBody Dish dish, @RequestParam("restId") int restId) {
+    public Dish create(@RequestBody Dish dish, @PathVariable("restId") int restId) {
 
         return dishService.save(dish, restId);
     }
 
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/restaurant/{id}")
-    public Collection<Dish> getAllByRestaurantForDay(@PathVariable("id") int restId, @RequestParam(value = "currentDate", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate currentDate) {
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/getAllByRestaurant")
+    public Collection<Dish> getAllByRestaurantForDay(@PathVariable("restId") int restId, @RequestParam(value = "currentDate", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate currentDate) {
 
         return dishService.getAllByRestaurantAndDate(restId, currentDate);
     }
