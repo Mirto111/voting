@@ -16,7 +16,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/rest/restaurants/{restId}/dishes")
+@RequestMapping({"/rest/restaurants/{restId}/dishes","/rest/restaurants/dishes"})
 public class DishRestController {
 
 
