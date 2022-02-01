@@ -6,47 +6,38 @@ import io.restassured.specification.RequestSpecification;
 import myProject.voting.VotingApplication;
 import myProject.voting.model.Dish;
 import myProject.voting.model.Restaurant;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
-import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest(classes = VotingApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class DishRestControllerTest {
-
 
     private static final String API_ROOT = "http://localhost:8080/rest/restaurants";
 
     private RequestSpecification givenAuth() {
-
         return RestAssured.given().
-                auth().preemptive().basic("admin@gmail.com","admin");
-
+                auth().preemptive().basic("admin@gmail.com", "admin");
     }
 
     @Test
     public void get() {
-
         Dish dish = createRandomDish();
         String location = createDishAsUri(dish);
         final Response response = givenAuth().get(location);
-        assertEquals(HttpStatus.OK.value(),response.getStatusCode());
+        assertEquals(HttpStatus.OK.value(), response.getStatusCode());
     }
 
     @Test
     public void delete() {
-
         Dish dish = createRandomDish();
         String location = createDishAsUri(dish);
 
@@ -55,50 +46,37 @@ public class DishRestControllerTest {
 
         response = givenAuth().get(location);
         assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatusCode());
-
     }
 
     @Test
     public void update() {
-
         Dish dish = createRandomDish();
         String location = createDishAsUri(dish);
-
 
         dish.setPrice(BigDecimal.valueOf(10.20));
 
         Response response = givenAuth()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(dish)
-                .put(API_ROOT + "/"+dish.getRestaurant().getId()+"/dishes");
+                .put(API_ROOT + "/" + dish.getRestaurant().getId() + "/dishes");
         assertEquals(HttpStatus.OK.value(), response.getStatusCode());
 
         response = givenAuth().get(location);
-        assertEquals(HttpStatus.OK.value(),response.getStatusCode());
+        assertEquals(HttpStatus.OK.value(), response.getStatusCode());
         assertEquals(dish.getPrice(), BigDecimal.valueOf(response.jsonPath().getDouble("price")));
     }
 
     @Test
     public void create() {
-
         Dish dish = createRandomDish();
 
         final Response response = givenAuth()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(dish)
-                .post(API_ROOT + "/"+dish.getRestaurant().getId()+"/dishes");
+                .post(API_ROOT + "/" + dish.getRestaurant().getId() + "/dishes");
 
         assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
     }
-
-//    @Test
-//    public void getAllByRestaurantForDay() {
-//    }
-//
-//    @Test
-//    public void getAllByDate() {
-//    }
-
 
     private Dish createRandomDish() {
         final Dish dish = new Dish();
@@ -113,10 +91,10 @@ public class DishRestControllerTest {
         final Response response = givenAuth().given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(dish)
-                .post(API_ROOT+"/"+dish.getRestaurant().getId()+"/dishes");
+                .post(API_ROOT + "/" + dish.getRestaurant().getId() + "/dishes");
 
-                dish.setId(response.jsonPath().get("id"));
-        return API_ROOT + "/"+dish.getRestaurant().getId()+"/dishes/" + response.jsonPath()
+        dish.setId(response.jsonPath().get("id"));
+        return API_ROOT + "/" + dish.getRestaurant().getId() + "/dishes/" + response.jsonPath()
                 .get("id");
     }
 
@@ -132,7 +110,4 @@ public class DishRestControllerTest {
 
         return restaurant;
     }
-
-
-
 }
