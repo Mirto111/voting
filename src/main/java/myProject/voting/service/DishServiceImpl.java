@@ -2,42 +2,36 @@ package myProject.voting.service;
 
 import myProject.voting.model.Dish;
 import myProject.voting.repository.datajpa.CrudDishRepository;
-import myProject.voting.repository.datajpa.CrudRestaurantRepository;
 import myProject.voting.util.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class DishServiceImpl implements DishService {
 
-    @Autowired
-    CrudDishRepository crudDishRepository;
+    private final CrudDishRepository crudDishRepository;/**/
+    private final RestaurantService crudRestaurantRepository;
 
-    @Autowired
-    RestaurantService crudRestaurantRepository;
-
+    public DishServiceImpl(CrudDishRepository crudDishRepository, RestaurantService crudRestaurantRepository) {
+        this.crudDishRepository = crudDishRepository;
+        this.crudRestaurantRepository = crudRestaurantRepository;
+    }
 
     @Override
     public Dish save(Dish dish, int restId) {
-
         if (!dish.isNew() && get(dish.getId(), restId) == null) {
             return null;
         }
         dish.setRestaurant(crudRestaurantRepository.get(restId));
-
         return crudDishRepository.save(dish);
     }
 
     @Override
     public Dish get(int id, int restId) {
-
-        return Optional.ofNullable(crudDishRepository.getByIdAndRestaurantId(id, restId)).orElseThrow(()->new NotFoundException("Dish with id="+ id+" not found"));
+        return Optional.ofNullable(crudDishRepository.getByIdAndRestaurantId(id, restId)).orElseThrow(() -> new NotFoundException("Dish with id=" + id + " not found"));
     }
 
     @Override

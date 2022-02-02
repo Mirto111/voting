@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @Table(name = "voting_result")
 public class VotingResult extends BaseEntity {
 
-
     @Column(name = "vote_date", nullable = false)
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -31,7 +30,7 @@ public class VotingResult extends BaseEntity {
     }
 
     public VotingResult(String restaurantName, int count) {
-        this( null, LocalDate.now(), restaurantName, count);
+        this(null, LocalDate.now(), restaurantName, count);
     }
 
     public VotingResult(Integer id, @NotNull LocalDate votingDate, @NotBlank String restaurantName, int count) {
@@ -64,7 +63,6 @@ public class VotingResult extends BaseEntity {
     public void setCount(int count) {
         this.count = count;
     }
-
 
     @Override
     public String toString() {

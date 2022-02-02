@@ -1,6 +1,6 @@
 INSERT INTO users (name, email, password)
-VALUES ('User', 'user@yandex.ru', '$2a$10$lvB2KsXBJCRHkjzc7puy9.LPM3GxZuXspshPgHtAIez4a/PjkjOlC'),
-('Admin', 'admin@gmail.com', '$2a$10$TEM2ZgHZGTPQMjCIzy6ciubuo5.1iGd5mfFxYFmNIqll4q8F1Jn.y'),
+VALUES ('User', 'user@yandex.ru', '{noop}user'),
+('Admin', 'admin@gmail.com', '{noop}admin'),
   ('User1', 'user1@yandex.ru', '{noop}user1');
 
 
@@ -11,10 +11,10 @@ INSERT INTO restaurants(name)
       ('У фонтана');
 
 INSERT INTO user_roles (role, user_id) VALUES
-  ('ROLE_USER', 1),
-  ('ROLE_ADMIN', 2),
-  ('ROLE_USER', 2),
-  ('ROLE_USER', 3);
+  ('USER', 1),
+  ('ADMIN', 2),
+  ('USER', 2),
+  ('USER', 3);
 
 INSERT INTO dishes( description,price ,rest_id)
 VALUES('Рыбный суп',100.05,1),

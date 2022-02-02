@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Transactional(readOnly = true)
-public interface CrudVoteRepository extends JpaRepository<VotingResult,Integer> {
+public interface CrudVoteRepository extends JpaRepository<VotingResult, Integer> {
 
     @Override
     @Transactional

@@ -4,7 +4,6 @@ import myProject.voting.AuthorizedUser;
 import myProject.voting.model.User;
 import myProject.voting.repository.datajpa.CrudUserRepository;
 import myProject.voting.util.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,8 +17,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     private static final Sort SORT_NAME_EMAIL = Sort.by("name", "email");
 
-    @Autowired
-    private CrudUserRepository crudRepository;
+    private final CrudUserRepository crudRepository;
+
+    public UserServiceImpl(CrudUserRepository crudRepository) {
+        this.crudRepository = crudRepository;
+    }
 
     @Override
     public User save(User user) {
@@ -34,7 +36,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public User get(int id) {
-        return crudRepository.findById(id).orElseThrow(()->new NotFoundException("User with id="+ id+" not found"));
+        return crudRepository.findById(id).orElseThrow(() -> new NotFoundException("User with id=" + id + " not found"));
     }
 
     @Override
@@ -44,7 +46,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public User getByEmail(String email) {
-        return Optional.ofNullable(crudRepository.getByEmail(email)).orElseThrow(()->new NotFoundException("User with email="+ email+" not found"));
+        return Optional.ofNullable(crudRepository.getByEmail(email)).orElseThrow(() -> new NotFoundException("User with email=" + email + " not found"));
     }
 
     @Override

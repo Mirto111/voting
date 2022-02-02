@@ -3,15 +3,13 @@ package myProject.voting.web.rest;
 import myProject.voting.model.User;
 import myProject.voting.service.UserService;
 import myProject.voting.util.IllegalRequestDataException;
-import myProject.voting.util.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.Optional;
 
 
 @RestController
@@ -19,10 +17,10 @@ import java.util.Optional;
 public class UserRestController {
 
     private final UserService userService;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserRestController(UserService userService, BCryptPasswordEncoder passwordEncoder) {
+    public UserRestController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }

@@ -2,7 +2,10 @@ package myProject.voting.model;
 
 import org.springframework.data.domain.Persistable;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.util.Objects;
 
 
@@ -10,17 +13,14 @@ import java.util.Objects;
 public class BaseEntity implements Persistable<Integer> {
 
     @Id
-    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
 
     public BaseEntity() {
     }
 
     protected BaseEntity(Integer id) {
         this.id = id;
-
     }
 
     @Override
@@ -28,13 +28,13 @@ public class BaseEntity implements Persistable<Integer> {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     @Override
     public boolean isNew() {
         return (getId() == null);
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     @Override
@@ -47,7 +47,6 @@ public class BaseEntity implements Persistable<Integer> {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
     }
 }

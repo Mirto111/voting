@@ -3,7 +3,6 @@ package myProject.voting.service;
 import myProject.voting.model.VotingResult;
 import myProject.voting.model.VoteSystem;
 import myProject.voting.repository.datajpa.CrudVoteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,9 +13,11 @@ import java.util.Map;
 @Service
 public class VoteServiceImpl implements VoteService {
 
-    @Autowired
-    CrudVoteRepository crudVoteRepository;
+    private final CrudVoteRepository crudVoteRepository;
 
+    public VoteServiceImpl(CrudVoteRepository crudVoteRepository) {
+        this.crudVoteRepository = crudVoteRepository;
+    }
 
     public List<VotingResult> getResultsByDate(LocalDate localDate) {
         return crudVoteRepository.findAllByVotingDate(localDate);
@@ -29,7 +30,7 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public boolean vote(int userId, String restaurantName) {
-      return  VoteSystem.getVoteCount().put(userId, restaurantName)!=null;
+        return VoteSystem.getVoteCount().put(userId, restaurantName) != null;
     }
 
     @Override

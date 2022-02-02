@@ -1,20 +1,23 @@
 package myProject.voting.model;
 
-import javax.validation.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
-
+import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 
 @Entity
 @Table(name = "restaurants")
 public class Restaurant extends BaseEntity {
 
-
     @Column(name = "name")
     @NotBlank
     private String name;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Dish>dishes;
 
     public Restaurant() {
     }
@@ -26,6 +29,14 @@ public class Restaurant extends BaseEntity {
     public Restaurant(Integer id, String name) {
         super(id);
         this.name = name;
+    }
+
+    public List<Dish> getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
     }
 
     public String getName() {

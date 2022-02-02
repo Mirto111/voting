@@ -31,7 +31,7 @@ public class UserRestControllerTest {
         user.setEmail("test" + randomAlphabetic(3) + "@yandex.ru");
         user.setName(randomAlphabetic(15));
         user.setPassword(randomAlphabetic(8));
-        user.setRoles(Collections.singleton(Role.ROLE_USER));
+        user.setRoles(Collections.singleton(Role.USER));
         return user;
     }
 
