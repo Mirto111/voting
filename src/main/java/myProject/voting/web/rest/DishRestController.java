@@ -1,19 +1,27 @@
 package myProject.voting.web.rest;
 
+import java.time.LocalDate;
+import java.util.Collection;
 import myProject.voting.model.Dish;
 import myProject.voting.service.DishService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.util.Collection;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping({"/rest/restaurants/{restId}/dishes", "/rest/restaurants/dishes"})
+@RequestMapping({"/rest/restaurants/{restId}/dishes"})
 public class DishRestController {
 
     private final DishService dishService;
@@ -48,14 +56,15 @@ public class DishRestController {
     }
 
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/getAllByRestaurant")
-    public Collection<Dish> getAllByRestaurantForDay(@PathVariable("restId") int restId, @RequestParam(value = "currentDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate currentDate) {
-        return dishService.getAllByRestaurantAndDate(restId, currentDate);
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/by-date")
+    public Collection<Dish> getAllByRestaurantForDay(@PathVariable int restId,
+        @RequestParam(value = "date", required = false)
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return dishService.getAllByRestaurantAndDate(restId, date);
     }
 
-
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Collection<Dish> getAllByDate(@RequestParam(value = "currentDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate currentDate) {
-        return dishService.getAllByDate(currentDate);
+    public Collection<Dish> getAllByRestaurant(@PathVariable int restId) {
+        return dishService.getAllByRestaurant(restId);
     }
 }

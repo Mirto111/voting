@@ -1,12 +1,12 @@
 package myProject.voting.model;
 
-import org.springframework.data.domain.Persistable;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Objects;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.util.Objects;
+import org.springframework.data.domain.Persistable;
 
 
 @MappedSuperclass
@@ -32,6 +32,7 @@ public class BaseEntity implements Persistable<Integer> {
         this.id = id;
     }
 
+    @JsonIgnore
     @Override
     public boolean isNew() {
         return (getId() == null);

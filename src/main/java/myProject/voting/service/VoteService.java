@@ -1,24 +1,44 @@
 package myProject.voting.service;
 
-import myProject.voting.model.VotingResult;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import myProject.voting.model.VoteSystem;
+import myProject.voting.model.VotingResult;
+import myProject.voting.repository.datajpa.CrudVoteRepository;
+import org.springframework.stereotype.Service;
 
-public interface VoteService {
+@Service
+public class VoteService {
 
-    List<VotingResult> getResultsByDate(LocalDate localDate);
+    private final CrudVoteRepository crudVoteRepository;
 
-    List<VotingResult> saveAll(List<VotingResult> votes);
+    public VoteService(CrudVoteRepository crudVoteRepository) {
+        this.crudVoteRepository = crudVoteRepository;
+    }
 
-    boolean vote(int userId, String restaurantName);
+    public List<VotingResult> getResultsByDate(LocalDate localDate) {
+        return crudVoteRepository.findAllByVotingDate(localDate);
+    }
 
-    Map<String, Long> getCurrentResults();
+    public List<VotingResult> saveAll(List<VotingResult> votes) {
+        return crudVoteRepository.saveAll(votes);
+    }
 
-    void setEndOfVotingTime(LocalTime localTime);
+    public boolean vote(int userId, String restaurantName) {
+        return VoteSystem.getVoteCount().put(userId, restaurantName) != null;
+    }
 
-    LocalTime getEndOfVotingTime();
+    public Map<String, Long> getCurrentResults() {
+        return VoteSystem.getResults();
+    }
 
+    public void setEndOfVotingTime(LocalTime localTime) {
+        VoteSystem.setEndOfVotingTime(localTime);
+    }
+
+    public LocalTime getEndOfVotingTime() {
+        return VoteSystem.getEndOfVotingTime();
+    }
 }

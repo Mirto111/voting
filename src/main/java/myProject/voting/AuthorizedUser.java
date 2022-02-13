@@ -1,15 +1,11 @@
 package myProject.voting;
 
+import static java.util.Objects.requireNonNull;
+
 import myProject.voting.model.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-
-import static java.util.Objects.requireNonNull;
-
-/**
- * Created by Secret_Hero on 26.02.2018.
- */
 public class AuthorizedUser extends org.springframework.security.core.userdetails.User {
 
     private static final long serialVersionUID = 1L;

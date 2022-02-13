@@ -1,7 +1,7 @@
 package myProject.voting.config;
 
 import myProject.voting.model.Role;
-import myProject.voting.service.UserServiceImpl;
+import myProject.voting.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,9 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
-    public SecurityConfig(RestAuthenticationEntryPoint restAuthenticationEntryPoint, UserServiceImpl userService) {
+    public SecurityConfig(RestAuthenticationEntryPoint restAuthenticationEntryPoint, UserService userService) {
         this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
         this.userService = userService;
     }
@@ -31,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests().antMatchers("/css/**", "/js/**", "/login/**").anonymous()
                 .antMatchers("/rest/users/**").hasRole(Role.ADMIN.name())
+                //.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().httpBasic().authenticationEntryPoint(restAuthenticationEntryPoint);
     }
 

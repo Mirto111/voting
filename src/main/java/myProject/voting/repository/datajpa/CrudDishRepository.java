@@ -1,14 +1,13 @@
 package myProject.voting.repository.datajpa;
 
+import java.time.LocalDate;
+import java.util.List;
 import myProject.voting.model.Dish;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Transactional(readOnly = true)
 public interface CrudDishRepository extends JpaRepository<Dish, Integer> {
@@ -26,6 +25,6 @@ public interface CrudDishRepository extends JpaRepository<Dish, Integer> {
 
     List<Dish> getAllByRestaurantIdAndCurrentDate(int restId, LocalDate localDate);
 
-    List<Dish> getAllByCurrentDate(LocalDate localDate);
+    List<Dish> getAllByRestaurantId(int restId);
 
 }
