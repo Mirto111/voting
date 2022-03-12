@@ -32,4 +32,4 @@ VALUES('Рыбный суп',100.05,1),
   ('Какао',28.10,4);
 
 INSERT INTO voting_result (vote_date,rest_name, count_vote) VALUES
-  ('2018-05-20','Три кабана',2),('2018-05-20','Иль Патио',5);
+  (CURRENT_DATE,'Три кабана',2),(CURRENT_DATE,'Иль Патио',5);

@@ -8,42 +8,82 @@ import ru.projects.voting.model.Restaurant;
 import ru.projects.voting.repository.datajpa.CrudRestaurantRepository;
 import ru.projects.voting.util.NotFoundException;
 
+/**
+ * Сервис для работы с ресторанами.
+ */
+
 @Service
-public class RestaurantService{
+public class RestaurantService {
 
-    private static final Sort SORT_NAME = Sort.by("name");
+  private static final Sort SORT_NAME = Sort.by("name");
 
-    private final CrudRestaurantRepository crudRestaurantRepository;
+  private final CrudRestaurantRepository crudRestaurantRepository;
 
-    public RestaurantService(CrudRestaurantRepository crudRestaurantRepository) {
-        this.crudRestaurantRepository = crudRestaurantRepository;
-    }
+  public RestaurantService(CrudRestaurantRepository crudRestaurantRepository) {
+    this.crudRestaurantRepository = crudRestaurantRepository;
+  }
 
-    public Restaurant save(Restaurant restaurant) {
-        return crudRestaurantRepository.save(restaurant);
-    }
+  /**
+   * Сохраняем ресторан.
+   *
+   * @param restaurant ресторан для сохранения
+   * @return возвращает сохраненный ресторан
+   */
+  public Restaurant save(Restaurant restaurant) {
+    return crudRestaurantRepository.save(restaurant);
+  }
 
-    public void delete(int restId) {
-        get(restId);
-        crudRestaurantRepository.delete(restId);
-    }
+  /**
+   * Удаление ресторана по Id.
+   *
+   * @param restId Id ресторана
+   */
+  public void delete(int restId) {
+    get(restId);
+    crudRestaurantRepository.delete(restId);
+  }
 
-    public Restaurant get(int restId) {
-        return crudRestaurantRepository.findById(restId).orElseThrow(() -> new NotFoundException("Restaurant with id=" + restId + " not found"));
-    }
+  /**
+   * Получение ресторана по Id.
+   *
+   * @param restId Id ресторана
+   * @return возвращаем ресторан
+   * @throws NotFoundException если ресторан не найден
+   */
+  public Restaurant get(int restId) {
+    return crudRestaurantRepository.findById(restId)
+        .orElseThrow(() -> new NotFoundException("Restaurant with id=" + restId + " not found"));
+  }
 
-    public Collection<Restaurant> getAll() {
-        return crudRestaurantRepository.findAll(SORT_NAME);
-    }
+  /**
+   * Получение коллекции ресторанов.
+   *
+   * @return возвращает коллекцию отсортированную по имени ресторана
+   */
+  public Collection<Restaurant> getAll() {
+    return crudRestaurantRepository.findAll(SORT_NAME);
+  }
 
-    public Collection<Restaurant>getAllByDate(LocalDate date) {
-        return crudRestaurantRepository.getAllByDate(date);
-    }
+  /**
+   * Получение ресторанов вместе со списком блюд на указанную дату.
+   *
+   * @param date требуемая дата
+   * @return возвращает коллекцию ресторанов
+   */
+  public Collection<Restaurant> getRestaurantsWithDishesByDate(LocalDate date) {
+    return crudRestaurantRepository.getRestaurantsWithDishesByDate(date);
+  }
 
-    public Restaurant getWithDishByDate(int restId, LocalDate date) {
-        return crudRestaurantRepository.getRestaurantByIdAndDate(restId, date);
-    }
-
+  /**
+   * Получение ресторана со списком блюд на указанную дату.
+   *
+   * @param restId Id ресторана
+   * @param date   требуемая дата
+   * @return возвращает ресторан
+   */
+  public Restaurant getWithDishByDate(int restId, LocalDate date) {
+    return crudRestaurantRepository.getRestaurantByIdAndDate(restId, date);
+  }
 
 
 }

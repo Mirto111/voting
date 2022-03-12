@@ -16,56 +16,76 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.projects.voting.model.User;
 import ru.projects.voting.service.UserService;
-import ru.projects.voting.util.IllegalRequestDataException;
 
-
+/**
+ * Контроллер для работы с пользователями.
+ */
 @RestController
 @RequestMapping("/rest/users")
 public class UserRestController {
 
-    private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
+  private final UserService userService;
+  private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserRestController(UserService userService, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-    }
+  @Autowired
+  public UserRestController(UserService userService, PasswordEncoder passwordEncoder) {
+    this.userService = userService;
+    this.passwordEncoder = passwordEncoder;
+  }
 
+  /**
+   * Получение пользователя по Id.
+   *
+   * @param id id пользователя
+   * @return возвращает пользователя
+   */
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/{id}")
+  public User get(@PathVariable("id") int id) {
+    return userService.get(id);
+  }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/{id}")
-    public User get(@PathVariable("id") int id) {
-        return userService.get(id);
-    }
+  /**
+   * Удаление пользователя по Id.
+   *
+   * @param id id пользователя
+   */
+  @DeleteMapping(value = "/{id}")
+  public void delete(@PathVariable("id") int id) {
+    userService.delete(id);
+  }
 
-    @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable("id") int id) {
-        userService.delete(id);
-    }
+  /**
+   * Создание пользователя.
+   *
+   * @param user пользователь
+   * @return возвращает сохраненного пользователя
+   */
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public User create(@RequestBody User user) {
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    return userService.create(user);
+  }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public User create(@RequestBody User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userService.save(user);
-    }
+  /**
+   * Обновление данных пользователя.
+   *
+   * @param user пользователь
+   * @param id   идентификатор пользователя
+   */
+  @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, value = "/{id}")
+  public void update(@RequestBody User user, @PathVariable("id") int id) {
+    userService.update(user, id);
+  }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, value = "/{id}")
-    public void update(@RequestBody User user, @PathVariable("id") int id) {
-        if (user.getId() != id) {
-            throw new IllegalRequestDataException("User must be with id=" + id);
-        }
-        userService.save(user);
-    }
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  public Collection<User> getAll() {
+    return userService.getAll();
+  }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Collection<User> getAll() {
-        return userService.getAll();
-    }
-
-    @GetMapping(value = "/email/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public User getByEmail(@PathVariable String email) {
-        return userService.getByEmail(email);
-    }
+  @GetMapping(value = "/email/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public User getByEmail(@PathVariable String email) {
+    return userService.getByEmail(email);
+  }
 
 }

@@ -12,6 +12,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Сущность блюда ресторана(пункта меню).
+ */
 
 @Entity
 @Table(name = "dishes")

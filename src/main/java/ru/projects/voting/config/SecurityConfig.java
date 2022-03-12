@@ -13,35 +13,37 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.projects.voting.model.Role;
 import ru.projects.voting.service.UserService;
 
+/**
+ * Конфигуратор Spring Security.
+ */
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
-    private final UserService userService;
+  private final UserService userService;
 
-    public SecurityConfig(RestAuthenticationEntryPoint restAuthenticationEntryPoint, UserService userService) {
-        this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
-        this.userService = userService;
-    }
+  public SecurityConfig(UserService userService) {
+    this.userService = userService;
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests().antMatchers("/css/**", "/js/**", "/login/**").anonymous()
-                .antMatchers("/rest/users/**").hasRole(Role.ADMIN.name())
-                //.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().httpBasic().authenticationEntryPoint(restAuthenticationEntryPoint);
-    }
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.csrf().disable()
+        .authorizeRequests().antMatchers("/css/**", "/js/**", "/login/**").anonymous()
+        .antMatchers("/rest/users/**").hasRole(Role.ADMIN.name())
+        //.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and().httpBasic();
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+  }
 
-    @Autowired
-    protected void configure(AuthenticationManagerBuilder authManagerBuilder) throws Exception {
-        authManagerBuilder.userDetailsService(userService).passwordEncoder(passwordEncoder());
-    }
+  @Autowired
+  protected void configure(AuthenticationManagerBuilder authManagerBuilder) throws Exception {
+    authManagerBuilder.userDetailsService(userService).passwordEncoder(passwordEncoder());
+  }
 }

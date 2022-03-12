@@ -11,7 +11,13 @@ import java.time.format.DateTimeFormatter;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.SpringDocUtils;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+/**
+ * Конфигуратор Swagger-а.
+ */
+
+@Configuration
 @SecurityScheme(
     name = "basicAuth",
     type = SecuritySchemeType.HTTP,

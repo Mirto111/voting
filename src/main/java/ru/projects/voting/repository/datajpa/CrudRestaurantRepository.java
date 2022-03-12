@@ -9,18 +9,21 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import ru.projects.voting.model.Restaurant;
 
+/**
+ * Репозиторий для сохранения и получения сущностей ресторана.
+ */
 
 @Transactional(readOnly = true)
 public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Integer> {
 
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM Restaurant r WHERE r.id=:id")
-    int delete(@Param("id") Integer id);
+  @Transactional
+  @Modifying
+  @Query("DELETE FROM Restaurant r WHERE r.id=:id")
+  int delete(@Param("id") Integer id);
 
-    @Query("SELECT DISTINCT r FROM Restaurant r JOIN FETCH r.dishes d WHERE d.currentDate=:date")
-    List<Restaurant> getAllByDate(LocalDate date);
+  @Query("SELECT DISTINCT r FROM Restaurant r JOIN FETCH r.dishes d WHERE d.currentDate=:date")
+  List<Restaurant> getRestaurantsWithDishesByDate(LocalDate date);
 
-    @Query("SELECT r FROM Restaurant r JOIN FETCH r.dishes d WHERE d.currentDate=:date AND r.id=:restId")
-    Restaurant getRestaurantByIdAndDate(int restId, LocalDate date);
+  @Query("SELECT r FROM Restaurant r JOIN FETCH r.dishes d WHERE d.currentDate=:date AND r.id=:restId")
+  Restaurant getRestaurantByIdAndDate(int restId, LocalDate date);
 }
